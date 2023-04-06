@@ -59,8 +59,18 @@ def build_partial_prompt(List[Document], max_example_len=200, max_partial_prompt
     tags_prompt = f"Available tags: {','.join(all_tags)}\n"
     return tags_prompt + examples
 
-def build_prompt(
+  
+def build_prompt(doc:Document, partial_prompt: str):
+    """
+    build prompt to predict tags for a specific document
+    """
+    i = 99 # arbitrary 'large-ish' number
+    prompt = partial_prompt 
+    prompt += f"<content-{i}>{doc.title}\n\n{doc.content}</content-{i}>\n"
+    prompt += f"<tags-{i}>"
+    return prompt
 
+  
 def predict_tags(doc, prompt):
     """
     guess tags for document
