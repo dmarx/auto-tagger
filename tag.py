@@ -5,7 +5,8 @@ from typing import List, Tuple
                 
 def parse_tags(text: List[str]) -> Tuple[set, str]:
     """
-    parses tags from document 
+    parses tags from document.
+    TO DO: set this up in a way that the user can configure logic. regex maybe?
     """
     pass
              
@@ -71,11 +72,15 @@ def build_prompt(doc:Document, partial_prompt: str):
     return prompt
 
   
-def predict_tags(doc, prompt):
+def predict_completion(prompt):
     """
     guess tags for document
     """
-    pass
+    response = openai.completion.Create(
+        model='gpt-4', # probably overkill
+        prompt=prompt,
+    )
+    return response['choices'][0]['message']['content']
 
 
 def main(docs):
@@ -86,7 +91,7 @@ def main(docs):
     partial_prompt = build_partial_prompt(tags_present)
     for doc in tags_absent:
         prompt = build_prompt(doc, partial_prompt)
-        tags = predict_tags(doc, prompt)
+        tags = predict_completion(prompt)
         doc.tags.update(tags)
         doc.save()
 
