@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Tuple
 
                 
-def parse_tags(text: List[str]) -> Tuple[set, str]:
+def parse_tags(text: str) -> Tuple[set, str]:
     """
     parses tags from document.
     TO DO: set this up in a way that the user can configure logic. regex maybe?
