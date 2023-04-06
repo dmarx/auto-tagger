@@ -1,7 +1,14 @@
 import openai
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
+                
+def parse_tags(text: List[str]) -> Tuple[set, str]:
+    """
+    parses tags from document 
+    """
+    pass
+             
 
 class Document:
     def __init__(self, fpath: Path):
@@ -10,7 +17,8 @@ class Document:
     def parse(self):
         lines = self.fpath.read().split('\n')
         self.title = lines[0]
-        self.tags: set, self.content: str = parse_tags_from_lines(lines[1:])
+        body = '\n'.join(lines[1:])
+        self.tags: set, self.content: str = parse_tags(body)
     @property
     def has_tags(self):
         return len(self.tags) > 0
@@ -33,18 +41,12 @@ def sort_docs(docs):
             tags_present.append(doc)
         else:
             tags_absent.append(doc)
-                           
-                
-def parse_tags_from_lines(lines: List[str]):
-    """
-    parses tags from document lines
-    """
-    pass
-                
+                              
     
-def build_prompt(docs_and_tags):
+def build_prompt(List[Document]):
     """
-    consumes output from `parse_tags_from_doc()` and formats it for the LLM
+    Use already-tagged documents as prompt examples.
+    Specify universe of known labels as a soft constraint.
     """
     pass
 
