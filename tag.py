@@ -3,12 +3,34 @@ from pathlib import Path
 from typing import List, Tuple
 
                 
+def get_tags(line: str):
+    """
+    parse all tags present in a document line
+    """
+    pass
+  
+def remove_tags_from_line(tags_in_line, line):
+    """
+    return the line of text with all tag elements removed
+    """
+    pass
+  
+  
 def parse_tags(text: str) -> Tuple[set, str]:
     """
     parses tags from document.
     TO DO: set this up in a way that the user can configure logic. regex maybe?
     """
-    pass
+    tags = []
+    lines_of_text_with_tags_removed = []
+    for line in text.split('\n'):
+        tags_in_line = get_tags(line)
+        if tags_in_line:
+            line = remove_tags_from_line(tags_in_line, line)
+            tags.extend(tags_in_line)
+        lines_of_text_with_tags_removed.append(line)
+    doc_without_tags = '\n'.join(lines_of_text_with_tags_removed)
+    return tags, doc_without_tags
              
 
 class Document:
