@@ -1,5 +1,6 @@
 import openai
 from pathlib import Path
+from typing import List
 
 
 class Document:
@@ -34,6 +35,13 @@ def sort_docs(docs):
             tags_absent.append(doc)
                            
                 
+def parse_tags_from_lines(lines: List[str]):
+    """
+    parses tags from document lines
+    """
+    pass
+                
+    
 def build_prompt(docs_and_tags):
     """
     consumes output from `parse_tags_from_doc()` and formats it for the LLM
@@ -58,7 +66,8 @@ def main(docs):
         tags = predict_tags(doc, prompt)
         doc.tags.update(tags)
         doc.save()
-   
+
+        
 if __name__ == '__main__':
     docs = [Document(fpath) for fpath in Path('.').glob('*.md')]
     main(docs)
