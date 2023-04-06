@@ -41,15 +41,25 @@ def sort_docs(docs):
             tags_present.append(doc)
         else:
             tags_absent.append(doc)
-                              
-    
-def build_prompt(List[Document]):
+
+
+# these thresholds are only very approximately respected and were chosen blindly
+def build_partial_prompt(List[Document], max_example_len=200, max_partial_prompt_len=1000):
     """
     Use already-tagged documents as prompt examples.
     Specify universe of known labels as a soft constraint.
     """
-    pass
+    all_tags = set()
+    examples = ""
+    for i, doc in enumerate(document):
+        if (len(doc.content) < max_example_len) and (len(examples) < max_partial_prompt_len):
+            examples += f"<content-{i}>{doc.title}\n\n{doc.content}</content-{i}>\n"
+            examples += f"<tags-{i}>{doc.tags}</tags-{i}>\n"
+        all_tags.update(doc.tags)
+    tags_prompt = f"Available tags: {','.join(all_tags)}\n"
+    return tags_prompt + examples
 
+def build_prompt(
 
 def predict_tags(doc, prompt):
     """
@@ -63,8 +73,9 @@ def main(docs):
     parse documents, build an LLM tagger, tag docs that don't already have tags.
     """
     tags_present, tags_absent = sort_docs(docs)
-    prompt = build_prompt(tags_present)
+    partial_prompt = build_partial_prompt(tags_present)
     for doc in tags_absent:
+        prompt = build_prompt(doc, partial_prompt)
         tags = predict_tags(doc, prompt)
         doc.tags.update(tags)
         doc.save()
