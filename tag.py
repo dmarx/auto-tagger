@@ -3,22 +3,14 @@ from pathlib import Path
 from typing import List, Tuple
 from loguru import logger
                 
-def get_tags(line: str):
+def get_tag(line: str):
     """
     parse all tags present in a document line
     """
-    outv=""
     pattern = "![](https://img.shields.io/badge/"
-    if pattern in line:
-        outv= line.strip()
-    return outv
-
-  
-def remove_tags_from_line(tags_in_line, line):
-    """
-    return the line of text with all tag elements removed
-    """
-    pass
+    if line.startswith(pattern):
+        return True
+    return False
   
   
 def parse_tags(text: str) -> Tuple[set, str]:
@@ -29,12 +21,16 @@ def parse_tags(text: str) -> Tuple[set, str]:
     tags = set()
     lines_of_text_with_tags_removed = []
     for line in text.split('\n'):
-        tags_in_line = get_tags(line)
-        if tags_in_line:
-            line = remove_tags_from_line(tags_in_line, line)
-            tags.update(tags_in_line) # might need to wrap this in a list
-        lines_of_text_with_tags_removed.append(line)
+        line = line.strip()
+        if is_tag(line):
+            #line = remove_tags_from_line(tag_in_line, line)
+            #line = line.remove()
+            #tags.update([tags_in_line]) # might need to wrap this in a list
+            tags.update([line])
+        else:
+           lines_of_text_with_tags_removed.append(line)
     logger.debug(lines_of_text_with_tags_removed)
+    
     doc_without_tags = '\n'.join(lines_of_text_with_tags_removed)
     return tags, doc_without_tags
              
