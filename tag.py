@@ -102,7 +102,7 @@ def predict_completion(prompt):
     guess tags for document
     """
     response = openai.Completion.create(
-        model='gpt-4', # probably overkill
+        model='gpt-3.5-turbo',
         prompt=prompt,
     )
     return response['choices'][0]['message']['content']
