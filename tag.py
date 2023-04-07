@@ -101,7 +101,7 @@ def predict_completion(prompt):
     """
     guess tags for document
     """
-    response = openai.completion.Create(
+    response = openai.Completion.Create(
         model='gpt-4', # probably overkill
         prompt=prompt,
     )
