@@ -124,7 +124,12 @@ def predict_chat_completion(prompt):
 
   
 def isolate_tags_from_completion(completion):
-    pass
+    tags=[]
+    sep = "</tags"
+    if sep in completion:
+        parts = completion.split(sep)
+        tags = parts[0].split(',')
+    return [t.strip() for t in tags]
 
 def build_chat_prompt(doc: Document, prompt_head: str):
     """
