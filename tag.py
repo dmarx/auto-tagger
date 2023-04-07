@@ -1,6 +1,7 @@
 import openai
 from pathlib import Path
 from typing import List, Tuple
+from loguru import logger
 
                 
 def get_tags(line: str):
@@ -147,14 +148,19 @@ def main(docs):
     parse documents, build an LLM tagger, tag docs that don't already have tags.
     """
     tags_present, tags_absent = sort_docs(docs)
+    logger.debug(f"tags_present: {len(tags_present)}, tags_absent: {len(tags_absent)}")
     prompt_head = build_prompt_head(tags_present)
+    logger.debug(prompt_head)
     for doc in tags_absent:
         #prompt = build_prompt(doc, prompt_head)
         #completion = predict_completion(prompt)
-        prompt = build_chat_prompt(doc, prompt_head)        
+        prompt = build_chat_prompt(doc, prompt_head)
+        logger.debug(prompt)
         completion = predict_chat_completion(prompt)
+        logger.debug(completion)
         tags = isolate_tags_from_completion(completion)
         if tags:
+            logger.debug(tags)
             doc.tags.update(tags)
             doc.save()
 
