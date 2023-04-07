@@ -66,6 +66,7 @@ def sort_docs(docs):
             tags_present.append(doc)
         else:
             tags_absent.append(doc)
+    return tags_present, tags_absent
 
 
 # these thresholds are only very approximately respected and were chosen blindly
