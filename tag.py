@@ -105,6 +105,9 @@ def predict_completion(prompt):
     return response['choices'][0]['message']['content']
 
 
+def isolate_tags_from_completion(completion):
+    pass
+
 def main(docs):
     """
     parse documents, build an LLM tagger, tag docs that don't already have tags.
@@ -113,7 +116,8 @@ def main(docs):
     partial_prompt = build_partial_prompt(tags_present)
     for doc in tags_absent:
         prompt = build_prompt(doc, partial_prompt)
-        tags = predict_completion(prompt)
+        completion = predict_completion(prompt)
+        tags = isolate_tags_from_completion(completion)
         doc.tags.update(tags)
         doc.save()
 
