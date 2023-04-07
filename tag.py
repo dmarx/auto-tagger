@@ -46,7 +46,9 @@ class Document:
             lines = f.read().split('\n')
         self.title = lines[0]
         body = '\n'.join(lines[1:])
-        self.tags, self.content = parse_tags(body)
+        logger.debug(body)
+        if body:
+            self.tags, self.content = parse_tags(body)
     @property
     def has_tags(self):
         return len(self.tags) > 0
