@@ -41,7 +41,7 @@ class Document:
         lines = self.fpath.read().split('\n')
         self.title = lines[0]
         body = '\n'.join(lines[1:])
-        self.tags: set, self.content: str = parse_tags(body)
+        self.tags, self.content = parse_tags(body)
     @property
     def has_tags(self):
         return len(self.tags) > 0
