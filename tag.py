@@ -38,7 +38,9 @@ class Document:
         self.fpath = fpath
         self.parse()
     def parse(self):
-        lines = self.fpath.read().split('\n')
+        #lines = self.fpath.read().split('\n')
+        with open(self.fpath, 'r') as f:
+            lines = f.read().split('\n')
         self.title = lines[0]
         body = '\n'.join(lines[1:])
         self.tags, self.content = parse_tags(body)
