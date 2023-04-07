@@ -7,9 +7,11 @@ def get_tags(line: str):
     """
     parse all tags present in a document line
     """
+    outv=""
     pattern = "![](https://img.shields.io/badge/"
     if pattern in line:
-        return line.strip()
+        outv= line.strip()
+    return outv
 
   
 def remove_tags_from_line(tags_in_line, line):
