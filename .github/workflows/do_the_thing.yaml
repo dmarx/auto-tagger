@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v2
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: python scripts/update_readme.py
+        run: python tag.py
       - name: Commit files
         #if: "! git status --short" # check if there are changes to commit
         run: |
