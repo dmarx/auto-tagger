@@ -123,5 +123,6 @@ def main(docs):
 
         
 if __name__ == '__main__':
-    docs = [Document(fpath) for fpath in Path('.').glob('*.md')]
+    FOLDER= 'examples' #'.'
+    docs = [Document(fpath) for fpath in Path(FOLDER).glob('*.md')]
     main(docs)
