@@ -2,13 +2,15 @@ import openai
 from pathlib import Path
 from typing import List, Tuple
 from loguru import logger
-
                 
 def get_tags(line: str):
     """
     parse all tags present in a document line
     """
-    pass
+    pattern = "[![](https://img.shields.io/badge/"
+    parts = line.split(' ')
+    return [part for part in parts if pattern in part]
+
   
 def remove_tags_from_line(tags_in_line, line):
     """
