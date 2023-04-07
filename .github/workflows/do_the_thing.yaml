@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: '0'
       - uses: actions/setup-python@v2
-      - name install dependencies
+      - name: install dependencies
         run: pip install openai
       # Runs a single command using the runners shell
       - name: Run a one-line script
