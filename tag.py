@@ -21,13 +21,13 @@ def parse_tags(text: str) -> Tuple[set, str]:
     parses tags from document.
     TO DO: set this up in a way that the user can configure logic. regex maybe?
     """
-    tags = []
+    tags = set()
     lines_of_text_with_tags_removed = []
     for line in text.split('\n'):
         tags_in_line = get_tags(line)
         if tags_in_line:
             line = remove_tags_from_line(tags_in_line, line)
-            tags.extend(tags_in_line)
+            tags.update(tags_in_line) # might need to wrap this in a list
         lines_of_text_with_tags_removed.append(line)
     doc_without_tags = '\n'.join(lines_of_text_with_tags_removed)
     return tags, doc_without_tags
