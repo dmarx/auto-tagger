@@ -1,9 +1,7 @@
 import openai
 from pathlib import Path
 from typing import List, Tuple
-import
 
-openai.api_key = os.env['OPENAI_API_KEY']
                 
 def get_tags(line: str):
     """
