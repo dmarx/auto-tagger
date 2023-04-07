@@ -8,11 +8,8 @@ def get_tags(line: str):
     parse all tags present in a document line
     """
     pattern = "![](https://img.shields.io/badge/"
-    parts = line.split(' ')
-    logger.debug(parts)
-    outv= [part for part in parts if pattern in part]
-    logger.debug(outv)
-    return outv
+    if pattern in line:
+        retrun line.strip()
 
   
 def remove_tags_from_line(tags_in_line, line):
