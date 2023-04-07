@@ -7,8 +7,9 @@ def get_tags(line: str):
     """
     parse all tags present in a document line
     """
-    pattern = "[![](https://img.shields.io/badge/"
+    pattern = "![](https://img.shields.io/badge/"
     parts = line.split(' ')
+    logger.debug(parts)
     return [part for part in parts if pattern in part]
 
   
