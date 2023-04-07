@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Tuple
 from loguru import logger
                 
-def get_tag(line: str):
+def is_tag(line: str):
     """
     parse all tags present in a document line
     """
