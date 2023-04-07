@@ -10,7 +10,9 @@ def get_tags(line: str):
     pattern = "![](https://img.shields.io/badge/"
     parts = line.split(' ')
     logger.debug(parts)
-    return [part for part in parts if pattern in part]
+    outv= [part for part in parts if pattern in part]
+    logger.debug(outv)
+    return outv
 
   
 def remove_tags_from_line(tags_in_line, line):
