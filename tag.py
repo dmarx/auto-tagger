@@ -70,28 +70,31 @@ def sort_docs(docs):
 
 
 # these thresholds are only very approximately respected and were chosen blindly
-def build_partial_prompt(documents: List[Document], max_example_len: int=200, max_partial_prompt_len: int=1000):
+def build_prompt_head(documents: List[Document], max_example_len: int=200, max_partial_prompt_len: int=1000):
     """
     Use already-tagged documents as prompt examples.
     Specify universe of known labels as a soft constraint.
     """
     all_tags = set()
     examples = ""
+    j=0
     for i, doc in enumerate(documents):
         if (len(doc.content) < max_example_len) and (len(examples) < max_partial_prompt_len):
             examples += f"<content-{i}>{doc.title}\n\n{doc.content}</content-{i}>\n"
             examples += f"<tags-{i}>{doc.tags}</tags-{i}>\n"
+            j=i
         all_tags.update(doc.tags)
     tags_prompt = f"Available tags: {','.join(all_tags)}\n"
-    return tags_prompt + examples
+    return j+1, tags_prompt + examples
 
   
-def build_prompt(doc:Document, partial_prompt: str):
+def build_prompt(doc: Document, prompt_head: str):
     """
     build prompt to predict tags for a specific document
     """
-    i = 99 # arbitrary 'large-ish' number
-    prompt = partial_prompt 
+    #i = 99 # arbitrary 'large-ish' number
+    i, prompt_head = prompt_head
+    prompt = prompt_head 
     prompt += f"<content-{i}>{doc.title}\n\n{doc.content}</content-{i}>\n"
     prompt += f"<tags-{i}>"
     return prompt
@@ -107,19 +110,49 @@ def predict_completion(prompt):
     )
     return response['choices'][0]['message']['content']
 
+  
+def predict_chat_completion(prompt):
+    """
+    guess tags for document
+    """
+    response = openai.ChatCompletion.create(
+        model='gpt-3.5-turbo',
+        messages=prompt,
+    )
+    return response['choices'][0]['message']['content']
 
+  
 def isolate_tags_from_completion(completion):
     pass
 
+def build_chat_prompt(doc: Document, prompt_head: str):
+    """
+    build prompt to predict tags for a specific document.
+    modified for chat models
+    """
+    #i = 99 # arbitrary 'large-ish' number
+    i, system_prompt = prompt_head
+    #prompt = prompt_head 
+    user_prompt = f"<content-{i}>{doc.title}\n\n{doc.content}</content-{i}>\n"
+    user_prompt += f"<tags-{i}>"
+    messages = [
+      {'role':'system', 'content':system_prompt},
+      {'role':'user',   'content':user_prompt},
+    ]
+    return messages
+    
+  
 def main(docs):
     """
     parse documents, build an LLM tagger, tag docs that don't already have tags.
     """
     tags_present, tags_absent = sort_docs(docs)
-    partial_prompt = build_partial_prompt(tags_present)
+    prompt_head = build_prompt_head(tags_present)
     for doc in tags_absent:
-        prompt = build_prompt(doc, partial_prompt)
-        completion = predict_completion(prompt)
+        #prompt = build_prompt(doc, prompt_head)
+        #completion = predict_completion(prompt)
+        prompt = build_chat_prompt(doc, prompt_head)        
+        completion = predict_chat_completion(prompt)
         tags = isolate_tags_from_completion(completion)
         doc.tags.update(tags)
         doc.save()
