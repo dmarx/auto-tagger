@@ -32,6 +32,7 @@ def parse_tags(text: str) -> Tuple[set, str]:
             line = remove_tags_from_line(tags_in_line, line)
             tags.update(tags_in_line) # might need to wrap this in a list
         lines_of_text_with_tags_removed.append(line)
+    logger.debug(lines_of_text_with_tags_removed)
     doc_without_tags = '\n'.join(lines_of_text_with_tags_removed)
     return tags, doc_without_tags
              
