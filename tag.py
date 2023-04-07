@@ -131,7 +131,9 @@ def isolate_tags_from_completion(completion):
     sep = "</tags"
     if sep in completion:
         parts = completion.split(sep)
-        tags = parts[0].split(',')
+        completion = parts[0]
+    logger.debug(completion)
+    tags = completion.split(',')
     return [t.strip() for t in tags]
 
 def build_chat_prompt(doc: Document, prompt_head: str):
