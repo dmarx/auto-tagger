@@ -154,8 +154,9 @@ def main(docs):
         prompt = build_chat_prompt(doc, prompt_head)        
         completion = predict_chat_completion(prompt)
         tags = isolate_tags_from_completion(completion)
-        doc.tags.update(tags)
-        doc.save()
+        if tags:
+            doc.tags.update(tags)
+            doc.save()
 
         
 if __name__ == '__main__':
