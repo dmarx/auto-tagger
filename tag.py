@@ -9,7 +9,7 @@ def get_tags(line: str):
     """
     pattern = "![](https://img.shields.io/badge/"
     if pattern in line:
-        retrun line.strip()
+        return line.strip()
 
   
 def remove_tags_from_line(tags_in_line, line):
